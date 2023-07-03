@@ -1,4 +1,5 @@
-# Generate Media Info 
+# Generate Media Info
+
 This set of scripts and corresponding docker file will process all media files within a folder structure recursively and do one of the following:
 
 * create a mediainfo.json file for each one found and then create a single file that combines them all into one (to simplify processing)
@@ -23,12 +24,13 @@ To Generate media info files and consolidated mediainfo.json file run the follow
 docker run --rm -v /path/to/your/video/files:/data media-info -g
 ```
 
-**Note:
-You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data)**
+**Note:**
+You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data)
 
 Output will look like this:
 
 ```json
+[
   {
     "streams": [
       {
@@ -210,6 +212,7 @@ Output will look like this:
     }
   },
   ...
+]
 ```
 
 ### Summarize media info
@@ -218,38 +221,41 @@ Output will look like this:
 docker run --rm -v /path/to/your/video/files:/data media-info -s
 ```
 
-**Note:
-You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data) and another for the name of the summarized file to create**
+**Note:**
+You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data) and another for the name of the summarized file to create
 
 Output will look like this:
 
 ```json
-{
-    "filename": "/data/movie.mkv",
-    "format": {
-      "format_name": "matroska,webm",
-      "format_long_name": "Matroska / WebM",
-      "bit_rate": "9878670",
-      "size": "7725436645",
-      "encoder": "libebml v1.4.2 + libmatroska v1.6.4"
+[
+  {
+      "filename": "/data/movie.mkv",
+      "format": {
+        "format_name": "matroska,webm",
+        "format_long_name": "Matroska / WebM",
+        "bit_rate": "9878670",
+        "size": "7725436645",
+        "encoder": "libebml v1.4.2 + libmatroska v1.6.4"
+      },
+      "video": {
+        "codec_name": "hevc",
+        "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
+        "profile": "Main 10",
+        "codec_type": "video",
+        "coded_width": 3840,
+        "coded_height": 1600,
+        "avg_frame_rate": "24000/1001"
+      },
+      "audio": {
+        "codec_name": "eac3",
+        "codec_long_name": "ATSC A/52B (AC-3, E-AC-3)",
+        "profile": null,
+        "codec_type": "audio",
+        "sample_rate": "48000",
+        "channels": 6,
+        "channel_layout": "5.1(side)"
+      }
     },
-    "video": {
-      "codec_name": "hevc",
-      "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
-      "profile": "Main 10",
-      "codec_type": "video",
-      "coded_width": 3840,
-      "coded_height": 1600,
-      "avg_frame_rate": "24000/1001"
-    },
-    "audio": {
-      "codec_name": "eac3",
-      "codec_long_name": "ATSC A/52B (AC-3, E-AC-3)",
-      "profile": null,
-      "codec_type": "audio",
-      "sample_rate": "48000",
-      "channels": 6,
-      "channel_layout": "5.1(side)"
-    }
-  }
+    ...
+]
 ```
