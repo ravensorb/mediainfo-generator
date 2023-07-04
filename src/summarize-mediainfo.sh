@@ -9,6 +9,10 @@ output_file="${2:-mediainfo-summary.json}"
 
 [[ ! -f "$directory/mediainfo.json" ]] && { echo 2>&1 "Could not find mediainfo.json.  Run generate first and then try again."; exit 1; } 
 
+
+echo "Summarizing mediainfo files in $output_file"
+[[ -f "$directory/$output_file" ]] && rm "$directory/$output_file"
+
 jq '[.[] | {
   "filename": .format.filename,
   "format": {

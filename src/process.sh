@@ -5,13 +5,15 @@ command -v jq >/dev/null 2>&1 || { echo >&2 "jq command not found. Please instal
 
 option="" # Default option
 
-while getopts ":gs:" opt; do
+while getopts "gs" opt; do
   case $opt in
     g)
+      #echo "Requested to generate mediainfo files"
       option="g"
       shift 1
       ;;
     s)
+      #echo "Requested to summarize mediainfo files"
       option="s"
       shift 1
       ;;
