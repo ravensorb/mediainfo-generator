@@ -6,12 +6,6 @@ command -v ffprobe >/dev/null 2>&1 || { echo >&2 "ffprobe command not found. Ple
 # Check if jq command is available
 command -v jq >/dev/null 2>&1 || { echo >&2 "jq command not found. Please install jq."; exit 1; }
 
-# Check if a directory argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <directory> <output directory>"
-    exit 1
-fi
-
 # Get the directory path
 directory="${1:-/data}"
 output_directory="${2:-$directory}"
@@ -30,6 +24,8 @@ process_file() {
     output_file="${input_file%.*}.mediainfo.json"
     echo "$ffprobe_output" > "$output_file"
 
+    cat "$output_file" | jq '.format.filename |= sub("/data/"; "")' > "$output_file"
+
     echo "Media information saved to $output_file"
 }
 
@@ -42,7 +38,7 @@ process_directory() {
     while IFS= read -r -d '' file; do
         # Process each file
         process_file "$file"
-    done < <(find "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" \) -print0)
+    done < <(find "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" -o -iname "*.m4v" -o -iname "*.mv4" \) -print0 | sort -z)
 }
 
 # Combine all JSON files into a single JSON file using jq

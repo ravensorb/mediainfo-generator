@@ -3,15 +3,11 @@
 # Check if jq command is available
 command -v jq >/dev/null 2>&1 || { echo >&2 "jq command not found. Please install jq."; exit 1; }
 
-# Check if a directory argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <directory>"
-    exit 1
-fi
-
 # Get the directory path
 directory="${1:-/data}"
 output_file="${2:-mediainfo-summary.json}"
+
+[[ ! -f "$directory/mediainfo.json" ]] && { echo 2>&1 "Could not find mediainfo.json.  Run generate first and then try again."; exit 1; } 
 
 jq '[.[] | {
   "filename": .format.filename,
@@ -40,4 +36,4 @@ jq '[.[] | {
     "channels": .streams[1].channels,
     "channel_layout": .streams[1].channel_layout
   }
-}]' $directory/$output_file
+}]' $directory/mediainfo.json >> $directory/$output_file
