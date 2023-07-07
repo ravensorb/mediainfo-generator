@@ -16,18 +16,16 @@ docker build -t media-info .
 
 ## Usage
 
-### Generate media info files
-
 To Generate media info files and consolidated mediainfo.json file run the following command (after building the container)
 
 ```bash
-docker run --rm -v /path/to/your/video/files:/data media-info -g
+docker run --rm -v /path/to/your/video/files:/data media-info --path.data /data
 ```
 
 **Note:**
 You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data)
 
-Output will look like this:
+### Media Info Consolidate File Example
 
 ```json
 [
@@ -215,16 +213,7 @@ Output will look like this:
 ]
 ```
 
-### Summarize media info
-
-```bash
-docker run --rm -v /path/to/your/video/files:/data media-info -s
-```
-
-**Note:**
-You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data) and another for the name of the summarized file to create
-
-Output will look like this:
+### Media Info Summary File Examplpe
 
 ```json
 [

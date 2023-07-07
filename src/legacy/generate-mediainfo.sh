@@ -7,8 +7,10 @@ command -v ffprobe >/dev/null 2>&1 || { echo >&2 "ffprobe command not found. Ple
 command -v jq >/dev/null 2>&1 || { echo >&2 "jq command not found. Please install jq."; exit 1; }
 
 # Get the directory path
-directory="${1:-/data}"
-output_directory="${2:-$directory}"
+[[ -z $PATH_DATA ]]     && PATH_DATA="${1:-/data}"
+[[ -z $PATH_OUTPUT ]]   && PATH_OUTPUT="${2:-$PATH_DATA}"
+
+ls -FCla $PATH_DATA
 
 # Function to process a single file
 process_file() {
@@ -18,7 +20,7 @@ process_file() {
     ffprobe_output=$(ffprobe -v quiet -print_format json -show_format -show_streams "$input_file")
 
     # Save the output to a JSON file
-    output_file="${input_file%.*}.json"
+    local output_file="${input_file%.*}.json"
     [[ -f "$output_file" ]] && rm "$output_file"
 
     output_file="${input_file%.*}.mediainfo.json"
@@ -68,7 +70,7 @@ combine_json_files() {
 }
 
 # Start processing the directory
-process_directory "$directory"
+process_directory "$PATH_DATA"
 
 # Combine all JSON files
-combine_json_files "$directory" "$output_directory"
+combine_json_files "$PATH_DATA" "$PATH_OUTPUT"

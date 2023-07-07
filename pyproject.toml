@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "mediainfo-generator"
+version = "0.1.0"
+description = ""
+authors = ["Shawn Anderson <sanderson@eye-catcher.com>"]
+readme = "README.md"
+homepage = "https://github.com/ravensorb/mediainfo-generator"
+repository = "https://github.com/ravensorb/media-info-generator"
+classifiers = [
+    "Topic :: Utilities"
+]
+packages = [
+    {include = "mediainfo_generator", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+confuse = "^2.0.1"
+importlib-resources = "^5.12.0"
+coloredlogs = "^15.0.1"
+readchar = "^4.0.5"
+ruamel-yaml = "^0.17.21"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.2.1"
+scriv = {extras = ["toml"], version = "^1.2.1"}
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "*"
+
+[tool.poetry.scripts]
+"mediainfo-generator" = "mediainfo_generator:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

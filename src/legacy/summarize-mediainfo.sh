@@ -3,15 +3,16 @@
 # Check if jq command is available
 command -v jq >/dev/null 2>&1 || { echo >&2 "jq command not found. Please install jq."; exit 1; }
 
-# Get the directory path
-directory="${1:-/data}"
-output_file="${2:-mediainfo-summary.json}"
+# Get the PATH_DATA path
+[[ -z $PATH_DATA ]]   && PATH_DATA="${1:-/data}"
+[[ -z $PATH_OUTPUT ]] && PATH_OUTPUT="${1:-/data}"
+[[ -z $FILE_OUTPUT ]] && FILE_OUTPUT="${2:-$PATH_OUTPUT/mediainfo-summary.json}"
+[[ -z $FILE_INPUT ]]  && FILE_INPUT="${PATH_DATA}/mediainfo.json"
 
-[[ ! -f "$directory/mediainfo.json" ]] && { echo 2>&1 "Could not find mediainfo.json.  Run generate first and then try again."; exit 1; } 
+[[ ! -f "$PATH_DATA/mediainfo.json" ]] && { echo 2>&1 "Could not find mediainfo.json.  Run generate first and then try again."; exit 1; } 
 
-
-echo "Summarizing mediainfo files in $output_file"
-[[ -f "$directory/$output_file" ]] && rm "$directory/$output_file"
+echo "Summarizing mediainfo files in $FILE_OUTPUT"
+[[ -f "$FILE_OUTPUT" ]] && rm "$FILE_OUTPUT"
 
 jq '[.[] | {
   "filename": .format.filename,
@@ -40,4 +41,4 @@ jq '[.[] | {
     "channels": .streams[1].channels,
     "channel_layout": .streams[1].channel_layout
   }
-}]' $directory/mediainfo.json >> $directory/$output_file
+}]' $FILE_INPUT >> $$FILE_OUTPUT

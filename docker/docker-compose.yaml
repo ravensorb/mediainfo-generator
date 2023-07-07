@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  media-info:
+    image: media-info
+    container_name: media-info
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config:/config
+      - /mnt/rwusfs1-Media-Video/Disney:/data/disney
+      - /mnt/rwusfs1-Media/Video/Movies:/data/movies
+      - /mnt/rwusfs1-Media/Video/TV:/data/tv
+    command: -g
+    environment:
+      - PATH_DATA="/data"
+      - PATH_OUTPUT="/config"
