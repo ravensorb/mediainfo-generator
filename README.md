@@ -10,7 +10,7 @@ This set of scripts and corresponding docker file will process all media files w
 ``` bash
 git clone https://github.com/ravensorb/mediainfo-generator.git
 
-cd mediainfo-generator
+cd mediainfo-generator/docker
 docker build -t media-info . 
 ```
 
