@@ -1,9 +1,45 @@
 # Generate Media Info
 
+![PyPI - Downloads](https://img.shields.io/pypi/:period/mediainfo-generator)
+
 This set of scripts and corresponding docker file will process all media files within a folder structure recursively and do one of the following:
 
 * create a mediainfo.json file for each one found and then create a single file that combines them all into one (to simplify processing)
-* process the mediainfo.json file that was created and extract a few key properties to simplify reporting
+* process the mediainfo.json file that was created and extract a few key properties to simplify reporting and save this to mediainfo.summary.josn
+
+## Ways to run
+
+There are two ways to run the script, one is via installation (pip module) and the3 other is via docker.
+
+### Installation
+
+First step is to install the module via pip
+
+```bash
+pip install mediainfo-generator
+```
+
+Then you can run it like this
+
+```bash
+mediainfo-generator --path.data /mnt/video
+```
+
+### Docker
+
+To Generate media info files and consolidated mediainfo.json file run the following command (after building the container)
+
+```bash
+docker run --rm -v /path/to/your/video/files:/data media-info --path.data /data
+```
+
+**Note:** You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data)
+
+## Command Line Arguments
+
+```bash
+
+```
 
 ## Build
 
@@ -14,16 +50,7 @@ cd mediainfo-generator/docker
 docker build -t media-info . 
 ```
 
-## Usage
-
-To Generate media info files and consolidated mediainfo.json file run the following command (after building the container)
-
-```bash
-docker run --rm -v /path/to/your/video/files:/data media-info --path.data /data
-```
-
-**Note:**
-You can pass an optional argument if you want to change the root folder in the container to scan (defaults to /data)
+## Example Output
 
 ### Media Info Consolidate File Example
 

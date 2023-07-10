@@ -13,7 +13,7 @@ from mediainfo_generator.utils.settings_utils_v1 import globalSettingsMgr
 
 class MediaInfoScanner:
     def __init__(self):
-        self.logger = logging.getLogger()
+        self.logger = logging.getLogger("mediainfo_generator")
 
     #######################################################################################################
 
@@ -22,11 +22,12 @@ class MediaInfoScanner:
         self.media_summary_info = []
         self.media_files = []
 
-        self.__scan_folder()
+        self.__scan_folder(globalSettingsMgr.settings.output.individualFiles )
         self.__save_media_info()
-        
-        self.__summarize_media_info()
-        self.__save_summary_info()
+
+        if globalSettingsMgr.settings.output.summaryFile:
+            self.__summarize_media_info()
+            self.__save_summary_info()
         
         pass 
     
@@ -45,7 +46,7 @@ class MediaInfoScanner:
         
         return media_info
 
-    def __scan_folder(self):
+    def __scan_folder(self, saveIndividualFile: bool = False):
         self.logger.info(f"Scanning folder: {globalSettingsMgr.settings.path.data}")
 
         # Iterate over files in the folder
@@ -55,19 +56,21 @@ class MediaInfoScanner:
                 if file.lower().endswith(('.mp4', '.mkv', '.avi', '.m4v', '.mv4')):
                     file_path = os.path.join(root, file)
                     
-                    self.logger.debug(f"Processing file: {file_path}")
+                    self.logger.info(f"Processing file: {file_path}")
                     
                     media_info = self.__get_media_info(file_path)
 
-                    # json_file_path = os.path.splitext(file_path)[0] + '.mediainfo.json'
+                    if saveIndividualFile:
+                        json_file_path = os.path.splitext(file_path)[0] + '.mediainfo.json'
 
-                    # if os.path.exists(json_file_path):
-                    #     os.remove(json_file_path)
-                        
-                    # with open(json_file_path, 'w') as json_file:
-                    #     json.dump(media_info, json_file, indent=4)
+                        if os.path.exists(json_file_path):
+                            self.logger.debug(f'Removing existing file: {json_file_path}')
+                            os.remove(json_file_path)
+                            
+                        with open(json_file_path, 'w') as json_file:
+                            json.dump(media_info, json_file, indent=4)
 
-                    # logging.info(f'Saved media info for file: "{os.path.basename(file_path)}" to: "{os.path.basename(json_file_path)}"')            
+                        self.logger.info(f'\tSaved media info for file: "{os.path.basename(file_path)}" to: "{os.path.basename(json_file_path)}"')
 
                     self.media_files.append(file_path)
                     self.media_info.append(media_info)
@@ -75,11 +78,12 @@ class MediaInfoScanner:
         self.logger.info("Scanning completed")
 
     def __save_media_info(self):
-        self.logger.info(f"Saving media info to: {globalSettingsMgr.settings.path.output}")
+        self.logger.debug(f"Saving media info to: {globalSettingsMgr.settings.path.output}")
 
         output_file_path = f'{globalSettingsMgr.settings.path.output}/mediainfo.json'
 
         if os.path.exists(output_file_path):
+            self.logger.debug(f'Removing existing file: {output_file_path}')
             os.remove(output_file_path)
 
         # Save media info to JSON file
@@ -150,17 +154,18 @@ class MediaInfoScanner:
         self.media_summary_info = summary
 
     def __save_summary_info(self):
-        self.logger.info(f"Saving summary info to: {globalSettingsMgr.settings.path.output}")
+        self.logger.debug(f"Saving summary info to: {globalSettingsMgr.settings.path.output}")
         
         output_file_path = f'{globalSettingsMgr.settings.path.output}/mediainfo.summary.json'
 
         if os.path.exists(output_file_path):
+            self.logger.debug(f'Removing existing file: {output_file_path}')
             os.remove(output_file_path)
 
         with open(output_file_path, 'w') as output_file:
             json.dump(self.media_summary_info, output_file, indent=4)
 
-        logging.info(f'Saved summary info to: {output_file_path}')
+        self.logger.info(f'Saved summary info to: {output_file_path}')
 
     #######################################################################################################
 

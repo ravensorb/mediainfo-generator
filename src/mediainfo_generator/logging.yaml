@@ -87,13 +87,13 @@ handlers:
 root:
     level: NOTSET
     handlers: [info_console_handler]
-    propogate: yes
+    propogate: no
 
 loggers:
   # root:
   #   handlers: [info_console_handler, error_console_handler]
   #   propagate: no
-  pmm_cfg_gen:
-    handlers: [info_console_handler, warn_console_handler, error_console_handler, debug_console_handler, info_file_handler, warn_file_handler, error_file_handler, debug_file_handler]
+  mediainfo_generator:
+    handlers: [info_console_handler]
     level: INFO
-    propagate: yes
+    propagate: no

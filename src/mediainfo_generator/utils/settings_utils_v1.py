@@ -29,13 +29,25 @@ class SettingsPath:
         if self.output is None:
             self.output = self.data
 
+class SettingsOutput:
+    individualFiles: bool
+    combinedFile: bool
+    summaryFile: bool
+
+    def __init__(self, individualFiles: str, combinedFile: str, summaryFile: str) -> None:
+        self.individualFiles = individualFiles.strip().lower() in [ "enabled", "yes", "y", "true", "1" ]
+        self.combinedFile = combinedFile.strip().lower() in [ "enabled", "yes", "y", "true", "1" ]
+        self.summaryFile = summaryFile.strip().lower() in [ "enabled", "yes", "y", "true", "1" ]
+
 class Settings:
     version: str
     path: SettingsPath
+    output: SettingsOutput
 
-    def __init__(self, version: str, path: SettingsPath) -> None:
+    def __init__(self, version: str, path: SettingsPath, output: SettingsOutput) -> None:
         self.version = version
         self.path = path
+        self.output = output
 
 #######################################################################
 
@@ -87,7 +99,12 @@ class SettingsManager:
             path=SettingsPath(
                 data=self._config["path"]["data"].get(confuse.Optional(str)),  # type: ignore
                 output=self._config["path"]["output"].get(confuse.Optional(str)),  # type: ignore
-            )
+            ),
+            output=SettingsOutput(
+                individualFiles=self._config["output"]["individualFiles"].get(str),  # type: ignore
+                combinedFile=self._config["output"]["combinedFile"].get(str),  # type: ignore
+                summaryFile=self._config["output"]["summaryFile"].get(str),  # type: ignore
+            ),
         )
 
         #self._logger.debug("Active Settings:")
