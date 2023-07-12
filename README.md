@@ -1,6 +1,7 @@
 # Generate Media Info
 
-![PyPI - Downloads](https://img.shields.io/pypi/:period/mediainfo-generator)
+![GitHub](https://img.shields.io/github/license/ravensorb/mediainfo-generator)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/mediainfo-generator)
 
 This set of scripts and corresponding docker file will process all media files within a folder structure recursively and do one of the following:
 

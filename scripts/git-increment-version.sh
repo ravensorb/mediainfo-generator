@@ -7,12 +7,13 @@
 # 4) Push the tag
 
 # Parse command line options.
-while getopts ":Mmpd" Option
+while getopts ":Mmpdv:" Option
 do
   case $Option in
     M ) VERSION_INCREMENT_MAJOR=true;;
     m ) VERSION_INCREMENT_MINOR=true;;
     p ) VERSION_INCREMENT_PATCH=true;;
+    v ) GIT_VERSION=$OPTARG;;
     d ) DRY_RUN=true;;
   esac
 done
@@ -97,12 +98,12 @@ else
     # If it's not GIT_VERSION_BITS DRY_RUN run, let's go!
     # 3) Add git tag
     echo "Adding git tag v$GIT_VERSION_NEXT with message: $GIT_TAG_MESSAGE"
-    echo git tag -GIT_VERSION_BITS "v$GIT_VERSION_NEXT" -m "$GIT_TAG_MESSAGE"
+    git tag -a "v$GIT_VERSION_NEXT" -m "$GIT_TAG_MESSAGE"
 
     # 4) Push the new tag
 
     echo "Push the tag"
-    echo git push --tags origin master
+    git push --tags origin main
 
     echo -e "\e[32mRelease done: $GIT_VERSION_NEXT\e[0m"
   else
