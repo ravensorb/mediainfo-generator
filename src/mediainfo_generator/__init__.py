@@ -4,17 +4,19 @@
 
 import logging
 import os
-import readchar
 import signal
 
-from mediainfo_generator.utils.settings_utils_v1 import globalSettingsMgr
-from mediainfo_generator.utils.logging_utils import setup_logging
+import readchar
+
 from mediainfo_generator.utils.cli_args import globalArgs
+from mediainfo_generator.utils.logging_utils import setup_logging
 from mediainfo_generator.utils.media_utils import MediaInfoScanner
+from mediainfo_generator.utils.settings_utils_v1 import globalSettingsMgr
 
 #######################################################################
 
 #######################################################################
+
 
 def handler(signum, frame):
     msg = "Ctrl-c was pressed. Do you really want to exit? y/n "
@@ -27,6 +29,7 @@ def handler(signum, frame):
         print("", end="\r", flush=True)
         print(" " * len(msg), end="", flush=True)  # clear the printed line
         print("    ", end="\r", flush=True)
+
 
 signal.signal(signal.SIGINT, handler)
 
@@ -43,9 +46,11 @@ globalSettingsMgr.loadFromFile("config.yaml", globalArgs)
 
 #######################################################################
 
+
 def cli():
-    scanner = MediaInfoScanner() 
+    scanner = MediaInfoScanner()
     scanner.execute()
+
 
 #######################################################################
 #######################################################################

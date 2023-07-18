@@ -11,6 +11,7 @@ import yaml
 
 ###################################################################################################
 
+
 class RollingFileHanderEx(logging.handlers.RotatingFileHandler):
     def __init__(
         self,
@@ -26,7 +27,9 @@ class RollingFileHanderEx(logging.handlers.RotatingFileHandler):
 
         super().__init__(filename, mode, maxBytes, backupCount, encoding, delay, errors)
 
+
 ###################################################################################################
+
 
 def setup_logging(
     default_path="logging.yaml", default_level=logging.INFO, env_key="LOG_CFG"
@@ -50,8 +53,9 @@ def setup_logging(
                 logging.basicConfig(level=default_level)
                 coloredlogs.install(level=default_level)
     else:
-       
-        logging.basicConfig(level=default_level, format='%(asctime)s [%(levelname)s] %(message)s')
+        logging.basicConfig(
+            level=default_level, format="%(asctime)s [%(levelname)s] %(message)s"
+        )
         coloredlogs.install(level=default_level)
 
         print("Failed to load configuration file. Using default configs")
